@@ -80,6 +80,67 @@ public class DemoRecursion {
         printArr(arr, index + 1);
     }
 
+    public static int findUCLN(int num1, int num2)
+    {
+        /*
+         * Ước Chung Lớn Nhất (UCLN) của 2 số a, b là số lớn nhất mà 2 số a và b cùng chia hết
+         * Euclid Algorithm
+         * a = b*x + r;
+         * if r == 0, return b
+         * if r <> 0, b = r*y + r1 -> then check again until r == 0
+         */
+        if (num1 == 0) {
+            return num2;
+        }
+        if (num2 == 0) {
+            return num1;
+        }
+
+        int r = num1 % num2;
+        if (r == 0) {
+            return num2;
+        }
+
+        return findUCLN(num2, r);
+    }
+
+    public static int findBCNN(int num1, int num2)
+    {
+        //Bội Chung Nhỏ Nhất (BCNN) của 2 số a, b là số nhỏ nhất mà chia hết đồng thời cho cả a và b
+        if (num1 == 0 || num2 == 0) {
+            return -1; //error
+        }
+
+        int run = 0;
+        if (num1 > num2) {
+            run = num1;
+            if (num1 % num2 == 0) {
+                return num1;
+            }
+            else return findBCNNRecur(num1, num2, run, 1, run);
+        }
+        else{
+            run = num2;
+            if (num2 % num1 == 0) {
+                return num2;
+            }
+            else return findBCNNRecur(num1, num2, run, 1, run);
+        }
+    }
+
+    public static int findBCNNRecur(int num1, int num2, int startRun, int indexRun, int currRun)
+    {
+        //Bội Chung Nhỏ Nhất (BCNN) của 2 số a, b là số nhỏ nhất mà chia hết đồng thời cho cả a và b
+        //Dùng cách run + 1 sau mỗi lần lặp cũng ok nhưng sẽ tăng lũy tiến -> ko nhanh
+        //Dùng cách run * (1, 2, 3,...) sẽ nhanh đến đích hơn
+        
+        if (currRun % num1 == 0 && currRun % num2 == 0) {
+            return currRun;
+        }
+
+        return findBCNNRecur(num1, num2, startRun, indexRun + 1, startRun * (indexRun + 1));
+    }
+
     public static void main(String[] args) {
         // int n = 10;
         // System.out.println("factorial of " + n + " is: " + factorial(n));
@@ -95,7 +156,11 @@ public class DemoRecursion {
         // int n = -5;
         // System.out.println("sum from 1 to " + n + " is: " + sumFromOneToN(n));
 
-        int a = 4, n1 = -10;
-        System.out.println("exp " + n1 + " of " + a + " is: " + expNofA(a, n1));
+        // int a = 4, n1 = -10;
+        // System.out.println("exp " + n1 + " of " + a + " is: " + expNofA(a, n1));
+
+        int num1 = 28, num2 = 20;
+        // System.out.println("UCLN of " + num1 + " and " + num2 + " is " + findUCLN(num1, num2));
+        System.out.println("BCNN of " + num1 + " and " + num2 + " is " + findBCNN(num1, num2));
     }
 }
